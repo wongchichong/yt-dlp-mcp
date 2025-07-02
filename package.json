@@ -1,6 +1,6 @@
 {
-    "name": "yt-dlp-mcp",
-    "version": "0.6.26",
+    "name": "yt-dlp-ex-mcp",
+    "version": "0.6.27",
     "description": "An MCP server implementation that integrates with yt-dlp, providing video and audio content download capabilities (e.g. YouTube, Facebook, Tiktok, etc.) for LLMs.",
     "keywords": [
         "mcp",
@@ -29,7 +29,7 @@
         "prepare": "tsc && shx chmod +x ./lib/index.mjs",
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --forceExit"
     },
-    "author": "Dewei Yen <k@funmula.com>",
+    "author": "Chi Chong <wongchichongk@gmail.com>",
     "license": "MIT",
     "type": "module",
     "exports": {
@@ -38,18 +38,18 @@
         }
     },
     "dependencies": {
-        "@modelcontextprotocol/sdk": "0.7.0",
+        "@modelcontextprotocol/sdk": "1.13.3",
         "rimraf": "^6.0.1",
-        "spawn-rx": "^4.0.0"
+        "spawn-rx": "^5.1.2"
     },
     "devDependencies": {
-        "@jest/globals": "^29.7.0",
-        "@types/jest": "^29.5.14",
+        "@jest/globals": "^30.0.3",
+        "@types/jest": "^30.0.0",
         "@types/node": "^24.0.10",
-        "jest": "^29.7.0",
-        "shx": "^0.3.4",
-        "ts-jest": "^29.2.5",
+        "jest": "^30.0.3",
+        "shx": "^0.4.0",
+        "ts-jest": "^29.4.0",
         "ts-node": "^10.9.2",
-        "typescript": "^5.6.3"
+        "typescript": "^5.8.3"
     }
 }
