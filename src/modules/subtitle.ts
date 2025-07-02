@@ -27,14 +27,14 @@ export async function listSubtitles(url: string): Promise<string> {
   }
 
   try {
-    const output = await _spawnPromise('yt-dlp', [
+    const { stdout } = await _spawnPromise('yt-dlp', [
       '--list-subs',
       '--write-auto-sub',
       '--skip-download',
       '--verbose',
       url
     ]);
-    return output;
+    return stdout;
   } catch (error) {
     throw error;
   }

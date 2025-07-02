@@ -133,6 +133,18 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               description: "Preferred video resolution. For YouTube: '480p', '720p', '1080p', 'best'. For other platforms: '480p' for low quality, '720p'/'1080p' for HD, 'best' for highest quality. Defaults to '720p'",
               enum: ["480p", "720p", "1080p", "best"]
             },
+            startTime: {
+              type: "string",
+              description: "Start time of the video segment to download (e.g., '00:01:30', '1:30', '90')."
+            },
+            endTime: {
+              type: "string",
+              description: "End time of the video segment to download (e.g., '00:02:00', '2:00', '120')."
+            },
+            chapter: {
+              type: "string",
+              description: "Chapter title or 'all' to split video by all chapters. If a chapter title is provided, only that chapter will be downloaded. If 'all' is provided, the video will be split into multiple files based on chapters."
+            }
           },
           required: ["url"],
         },
@@ -200,7 +212,10 @@ server.setRequestHandler(
     const args = request.params.arguments as { 
       url: string;
       language?: string;
-      resolution?: string;
+      resolution?: "480p" | "720p" | "1080p" | "best";
+      startTime?: string;
+      endTime?: string;
+      chapter?: string;
     };
 
     if (toolName === "list_subtitle_languages") {
@@ -215,7 +230,7 @@ server.setRequestHandler(
       );
     } else if (toolName === "download_video") {
       return handleToolExecution(
-        () => downloadVideo(args.url, CONFIG, args.resolution as "480p" | "720p" | "1080p" | "best"),
+        () => downloadVideo(args.url, CONFIG, args.resolution, args.startTime, args.endTime, args.chapter),
         "Error downloading video"
       );
     } else if (toolName === "download_audio") {

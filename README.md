@@ -65,6 +65,9 @@ pip install yt-dlp
   * Inputs:
     * `url` (string, required): URL of the video
     * `resolution` (string, optional): Video resolution ('480p', '720p', '1080p', 'best'). Defaults to '720p'
+    * `startTime` (string, optional): Start time of the video segment to download (e.g., '00:01:30', '1:30', '90').
+    * `endTime` (string, optional): End time of the video segment to download (e.g., '00:02:00', '2:00', '120').
+    * `chapter` (string, optional): Chapter title or 'all' to split video by all chapters. If a chapter title is provided, only that chapter will be downloaded. If 'all' is provided, the video will be split into multiple files based on chapters.
 
 * **download_audio**
   * Download audio in best available quality (usually m4a/mp3 format) to user's Downloads folder

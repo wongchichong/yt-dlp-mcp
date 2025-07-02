@@ -88,24 +88,25 @@ export async function safeCleanup(directory: string): Promise<void> {
  * }
  * ```
  */
-export function _spawnPromise(command: string, args: string[]): Promise<string> {
+export function _spawnPromise(command: string, args: string[], cwd?: string): Promise<{ stdout: string; stderr: string; }> {
   return new Promise((resolve, reject) => {
-    const process = spawn(command, args);
-    let output = '';
+    const process = spawn(command, args, { cwd });
+    let stdout = '';
+    let stderr = '';
 
     process.stdout.on('data', (data) => {
-      output += data.toString();
+      stdout += data.toString();
     });
 
     process.stderr.on('data', (data) => {
-      output += data.toString();
+      stderr += data.toString();
     });
 
     process.on('close', (code) => {
       if (code === 0) {
-        resolve(output);
+        resolve({ stdout, stderr });
       } else {
-        reject(new Error(`Failed with exit code: ${code}\n${output}`));
+        reject(new Error(`Failed with exit code: ${code}\nStdout: ${stdout}\nStderr: ${stderr}`));
       }
     });
   });

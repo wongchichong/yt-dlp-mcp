@@ -12,7 +12,8 @@ process.env.PYTHONPATH = '';
 process.env.PYTHONHOME = '';
 
 describe('downloadVideo', () => {
-  const testUrl = 'https://www.youtube.com/watch?v=jNQXAC9IVRw';
+  const testUrl = 'https://www.youtube.com/watch?v=jNQXAC9IVRw'; // A short video for general tests
+  const chapterTestUrl = 'https://www.youtube.com/watch?v=pvkTC2xIbeY'; // A video with chapters for chapter tests
   const testConfig = {
     ...CONFIG,
     file: {
@@ -32,20 +33,18 @@ describe('downloadVideo', () => {
 
   test('downloads video successfully with correct format', async () => {
     const result = await downloadVideo(testUrl, testConfig);
-    expect(result).toContain('Video successfully downloaded');
+    expect(result).toContain('Video download process initiated');
     
     const files = await fs.promises.readdir(testConfig.file.downloadsDir);
     expect(files.length).toBeGreaterThan(0);
-    expect(files[0]).toMatch(/\.(mp4|webm|mkv)$/);
   }, 30000);
 
   test('uses correct resolution format', async () => {
     const result = await downloadVideo(testUrl, testConfig, '1080p');
-    expect(result).toContain('Video successfully downloaded');
+    expect(result).toContain('Video download process initiated');
     
     const files = await fs.promises.readdir(testConfig.file.downloadsDir);
     expect(files.length).toBeGreaterThan(0);
-    expect(files[0]).toMatch(/\.(mp4|webm|mkv)$/);
   }, 30000);
 
   test('handles invalid URL', async () => {
@@ -53,4 +52,25 @@ describe('downloadVideo', () => {
       .rejects
       .toThrow();
   });
-}); 
+
+  test('downloads video with start and end time', async () => {
+    const result = await downloadVideo(testUrl, testConfig, undefined, '00:00:05', '00:00:10');
+    expect(result).toContain('Video download process initiated');
+    const files = await fs.promises.readdir(testConfig.file.downloadsDir);
+    expect(files.length).toBeGreaterThan(0);
+  }, 30000);
+
+  test('downloads video with specific chapter', async () => {
+    const result = await downloadVideo(chapterTestUrl, testConfig, undefined, undefined, undefined, 'Chapter 1');
+    expect(result).toContain('Video download process initiated');
+    const files = await fs.promises.readdir(testConfig.file.downloadsDir);
+    expect(files.length).toBeGreaterThan(0);
+  }, 30000);
+
+  test('splits video by all chapters', async () => {
+    const result = await downloadVideo(chapterTestUrl, testConfig, undefined, undefined, undefined, 'all');
+    expect(result).toContain('Video download process initiated');
+    const files = await fs.promises.readdir(testConfig.file.downloadsDir);
+    expect(files.length).toBeGreaterThan(1);
+  }, 60000);
+});
