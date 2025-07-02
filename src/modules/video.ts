@@ -5,7 +5,8 @@ import type { Config } from "../config.js";
 import { 
   _spawnPromise, 
   validateUrl, 
-  isYouTubeUrl
+  isYouTubeUrl,
+  sanitizeFilename
 } from "./utils.js";
 
 /**
@@ -124,7 +125,7 @@ export async function downloadVideo(
       if (videoInfo.chapters && videoInfo.chapters.length > 0) {
         for (const chap of videoInfo.chapters) {
           if (chapter === "all" || chap.title === chapter) {
-            const chapterFileName = `${videoInfo.title} - ${chap.title}.mp4`;
+            const chapterFileName = `${sanitizeFilename(videoInfo.title)} - ${sanitizeFilename(chap.title)}.mp4`;
             const chapterOutputPath = path.join(tempDownloadDir, chapterFileName);
             const fullVideoPath = path.join(tempDownloadDir, fs.readdirSync(tempDownloadDir).find(f => f.endsWith('.mp4') || f.endsWith('.webm')) || '');
 
@@ -140,11 +141,11 @@ export async function downloadVideo(
               chapterOutputPath
             ];
 
+            console.log("Full video path:", fullVideoPath);
+            console.log("Chapter output path:", chapterOutputPath);
+            console.log("FFmpeg arguments:", ffmpegArgs);
             try {
-              const { stderr: ffmpegStderr } = await _spawnPromise("ffmpeg", ffmpegArgs);
-              if (ffmpegStderr) {
-                console.error("FFmpeg stderr:", ffmpegStderr);
-              }
+              await _spawnPromise("ffmpeg", ffmpegArgs);
             } catch (ffmpegError) {
               console.error(`Failed to extract chapter "${chap.title}":`, ffmpegError);
             }

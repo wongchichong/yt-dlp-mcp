@@ -181,4 +181,21 @@ export function cleanSubtitleToTranscript(srtContent: string): string {
     .join(' ')
     .replace(/\s+/g, ' ')
     .trim();
-} 
+}
+
+/**
+ * Sanitizes a string to be used as a safe filename.
+ * Removes characters that are invalid in most file systems and replaces spaces with underscores.
+ * 
+ * @param filename - The original string to sanitize
+ * @returns A sanitized string suitable for use as a filename
+ * 
+ * @example
+ * ```typescript
+ * const safeName = sanitizeFilename('My Video: Chapter 1/Part A');
+ * console.log(safeName); // 'My_Video_Chapter_1_Part_A'
+ * ```
+ */
+export function sanitizeFilename(filename: string): string {
+  return filename.replace(/[^a-zA-Z0-9-_.]/g, '_');
+}

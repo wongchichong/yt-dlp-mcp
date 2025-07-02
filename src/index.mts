@@ -16,6 +16,7 @@ import { _spawnPromise, safeCleanup } from "./modules/utils.js";
 import { downloadVideo } from "./modules/video.js";
 import { downloadAudio } from "./modules/audio.js";
 import { listSubtitles, downloadSubtitles, downloadTranscript } from "./modules/subtitle.js";
+import { listChapters } from "./modules/chapter.js";
 
 const VERSION = '0.6.26';
 
@@ -172,6 +173,17 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           required: ["url"],
         },
       },
+      {
+        name: "list_chapters",
+        description: "List all available chapters for a video.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            url: { type: "string", description: "URL of the video" },
+          },
+          required: ["url"],
+        },
+      },
     ],
   };
 });
@@ -242,6 +254,11 @@ server.setRequestHandler(
       return handleToolExecution(
         () => downloadTranscript(args.url, args.language || CONFIG.download.defaultSubtitleLanguage, CONFIG),
         "Error downloading transcript"
+      );
+    } else if (toolName === "list_chapters") {
+      return handleToolExecution(
+        () => listChapters(args.url),
+        "Error listing chapters"
       );
     } else {
       return {

@@ -80,6 +80,11 @@ pip install yt-dlp
     * `url` (string, required): URL of the video
     * `language` (string, optional): Language code (e.g., 'en', 'zh-Hant', 'ja'). Defaults to 'en'
 
+* **list_chapters**
+  * List all available chapters for a video.
+  * Inputs:
+    * `url` (string, required): URL of the video
+
 ## Usage Examples
 
 Ask your LLM to:
