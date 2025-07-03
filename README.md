@@ -39,7 +39,7 @@ pip install yt-dlp
       "command": "npx",
       "args": [
         "-y",
-        "@kevinwatt/yt-dlp-mcp"
+        "yt-dlp-ex-mcp"
       ]
     }
   }
@@ -102,7 +102,7 @@ Ask your LLM to:
 
 If needed, start the server manually:
 ```bash
-npx @kevinwatt/yt-dlp-mcp
+npx yt-dlp-ex-mcp
 ```
 
 ## Requirements
